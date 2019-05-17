@@ -125,3 +125,28 @@ program hello --verbose world
 program --hello
 --> unrecognized option: --hello
 ```
+
+## Extra documentation
+
+The option structure `optget_option` is defined as:
+
+```c
+typedef struct optget_option
+{   const char *long_name;
+    char short_name;
+    unsigned int argument_count;
+    const char **args;
+    int is_set;
+    unsigned int order;
+} optget_option;
+```
+
+* `args` must be set to a memory location where `const char*` values can be written--one for each argument.
+
+* `is_set` is set to `1` when the option was encountered in `argv`.
+
+* `order` is the order of appearance of the option, in relation to other options. It's not an index into `argv`, but can be used to check whether one option came before another.
+
+* If the same option is given multiple times, the values for the argument pointers and the order are overwritten with new ones.
+
+`optget` relies on the standard structure of `argv`. I.e. a list of zero-terminated strings. `argc` is the number of items in `argv`, including the executable's name.
